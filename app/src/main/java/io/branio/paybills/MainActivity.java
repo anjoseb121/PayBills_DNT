@@ -3,31 +3,38 @@ package io.branio.paybills;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    //private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment fragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_about);
-                    return true;
+                    fragment = new NewBillFragment();
+                    break;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_new);
-                    return true;
+                    fragment = new NewBillFragment();
+                    break;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_bills);
-                    return true;
+                    fragment = new NewBillFragment();
+                    break;
+                default:
+                    fragment = new NewBillFragment();
             }
-            return false;
+            replaceFragment(fragment);
+            return true;
         }
 
     };
@@ -37,9 +44,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private void replaceFragment(Fragment f) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.container, f);
+        ft.commit();
     }
 
 }

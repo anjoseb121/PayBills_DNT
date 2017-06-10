@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">PayBills</string>
-    <string name="title_about">Home</string>
-    <string name="title_new">Dashboard</string>
-    <string name="title_bills">Notifications</string>
+    <string name="title_about">About us</string>
+    <string name="title_new">Add bill</string>
+    <string name="title_bills">My bills</string>
+    <string-array name="types_array">
+        <item>Water</item>
+        <item>Energy</item>
+        <item>Gas</item>
+        <item>TV</item>
+    </string-array>
 </resources>
