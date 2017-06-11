@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:text="Month" />
 
-        <DatePicker
+        <TextView
             android:id="@+id/date_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -76,7 +76,7 @@
             android:layout_marginTop="20dp"
             android:text="Limit date" />
 
-        <DatePicker
+        <TextView
             android:id="@+id/date_due"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,6 +1,7 @@
 package io.branio.paybills.presentation;
 
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -38,13 +40,15 @@ import static io.branio.paybills.provider.BillsClient.BASE_URL;
  */
 public class NewBillFragment extends Fragment {
 
+    Calendar calendar;
     EditText editValue, editCompany, editName;
-    DatePicker dateMonth, dateDue;
+    TextView dateMonth, dateDue;
     Spinner spinnerType;
     Switch swPaid;
     Button buttonSave;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     private AsyncHttpClient client;
+    Date monthDate, dueDate;
 
     public NewBillFragment() {
         // Required empty public constructor
@@ -54,6 +58,9 @@ public class NewBillFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = new AsyncHttpClient();
+        calendar = Calendar.getInstance();
+        monthDate = calendar.getTime();
+        dueDate = calendar.getTime();
     }
 
     @Override
@@ -69,12 +76,26 @@ public class NewBillFragment extends Fragment {
         swPaid = root.findViewById(R.id.switch1);
         buttonSave = root.findViewById(R.id.button_save);
         editName = root.findViewById(R.id.edit_name);
+        dateMonth.setText(String.valueOf(monthDate));
+        dateDue.setText(String.valueOf(dueDate));
 
         // assign events
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveBill();
+            }
+        });
+        dateMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                opendatepicker();
+            }
+        });
+        dateDue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                opendatepickerDue();
             }
         });
         return root;
@@ -84,14 +105,10 @@ public class NewBillFragment extends Fragment {
         //Calendar newDate = Calendar.getInstance();
         int type = spinnerType.getSelectedItemPosition();
         Double value = Double.parseDouble(editValue.getText().toString());
-        int month = dateMonth.getMonth();
-        // due date
-        //newDate.set(dateDue.getYear(), dateDue.getMonth(), dateDue.getDayOfMonth());
-        Date due = new Date(dateDue.getYear(), dateDue.getMonth(), dateDue.getDayOfMonth());
         String company = editCompany.getText().toString();
         String name = editName.getText().toString();
         boolean paid = swPaid.isChecked();
-        Bill bill = new Bill(name, month, company, value, type, due, paid);
+        Bill bill = new Bill(name, monthDate.getMonth(), company, value, type, dueDate, paid);
 
         saveBillToService(bill);
     }
@@ -103,11 +120,11 @@ public class NewBillFragment extends Fragment {
         params.add("name", b.getName());
         params.add("month", String.valueOf(b.getMonth()));
         params.add("cost", String.valueOf(b.getValue()));
-        params.add("type", String.valueOf(b.getType()));
+        params.add("type", String.valueOf(b.getType()+1));
         params.add("company", b.getCompany());
         params.add("status", String.valueOf(b.isPaid() ? 1 : 0));
-        params.add("limit-date", String.valueOf(b.getDueDate()));
-
+        params.add("limitDate", sdf.format(dueDate));
+        Log.v("AntonioBar", "Due date"+sdf.format(dueDate));
         client.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -122,10 +139,46 @@ public class NewBillFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e("AntonioBar", "response ->"+errorResponse.toString());
-                Toast.makeText(getActivity(), "Error "+statusCode, Toast.LENGTH_SHORT).show();
+                //Log.e("AntonioBar", "response ->"+errorResponse.toString());
+                //Toast.makeText(getActivity(), "Error "+statusCode, Toast.LENGTH_SHORT).show();
+                throwable.printStackTrace();
             }
         });
     }
+
+    public void opendatepicker(){
+        DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year,
+                                  int monthOfYear, int dayOfMonth) {
+                // Toast.makeText(getActivity(),""+year+"-"+(monthOfYear+1)+"-"+dayOfMonth,Toast.LENGTH_SHORT).show();
+                monthDate = new Date(year-1900, monthOfYear, dayOfMonth);
+                dateMonth.setText(String.valueOf(monthDate));
+            }
+        };
+
+        DatePickerDialog d = new DatePickerDialog(getActivity(),
+                mDateSetListener, monthDate.getYear(), monthDate.getMonth(), monthDate.getDay());
+        d.show();
+    }
+
+    public void opendatepickerDue(){
+        DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year,
+                                  int monthOfYear, int dayOfMonth) {
+                // Toast.makeText(getActivity(),""+year+"-"+(monthOfYear+1)+"-"+dayOfMonth,Toast.LENGTH_SHORT).show();
+                dueDate = new Date(year-1900, monthOfYear, dayOfMonth);
+                dateDue.setText(String.valueOf(dueDate));
+
+            }
+        };
+
+        DatePickerDialog d = new DatePickerDialog(getActivity(),
+                mDateSetListener, dueDate.getYear(), dueDate.getMonth(), dueDate.getDay());
+        d.show();
+    }
+
+
 
 }

@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             Fragment fragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    fragment = new NewBillFragment();
+                    fragment = new AboutUsFragment();
                     break;
                 case R.id.navigation_dashboard:
                     fragment = new NewBillFragment();
