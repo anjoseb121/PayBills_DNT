@@ -10,6 +10,7 @@
         android:orientation="vertical"
         android:paddingBottom="60dp"
         app:layout_scrollFlags="scroll"
+        android:gravity="center"
         tools:context="io.branio.paybills.presentation.NewBillFragment">
 
         <android.support.design.widget.TextInputLayout
@@ -21,7 +22,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Name" />
+
         </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Month" />
 
         <DatePicker
             android:id="@+id/date_month"
@@ -60,6 +69,13 @@
             android:layout_weight="1"
             android:entries="@array/types_array" />
 
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Limit date" />
+
         <DatePicker
             android:id="@+id/date_due"
             android:layout_width="wrap_content"
@@ -78,7 +94,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="Save" />
 
     </LinearLayout>
 </ScrollView>

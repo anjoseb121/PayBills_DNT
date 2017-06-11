@@ -41,6 +41,9 @@ public class BillsAdapter extends
     public void onBindViewHolder(ViewHolder holder, int position) {
         Bill bill = bills.get(position);
         holder.nameTextView.setText(bill.getName());
+        holder.company.setText(bill.getCompany());
+        holder.cost.setText(String.valueOf(bill.getValue()));
+        holder.limitDate.setText(String.valueOf(bill.getDueDate()));
     }
 
     @Override
@@ -53,7 +56,7 @@ public class BillsAdapter extends
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView nameTextView;
+        public TextView nameTextView, limitDate, cost, company;
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
         public ViewHolder(View itemView) {
@@ -62,6 +65,9 @@ public class BillsAdapter extends
             super(itemView);
 
             nameTextView = itemView.findViewById(R.id.text_item_name);
+            limitDate = itemView.findViewById(R.id.text_limit_date);
+            cost = itemView.findViewById(R.id.text_cost);
+            company = itemView.findViewById(R.id.text_company);
         }
     }
 }
