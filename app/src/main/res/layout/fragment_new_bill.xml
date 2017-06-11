@@ -8,10 +8,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="50dp"
+        android:paddingBottom="60dp"
         app:layout_scrollFlags="scroll"
-        tools:context="io.branio.paybills.NewBillFragment">
+        tools:context="io.branio.paybills.presentation.NewBillFragment">
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name" />
+        </android.support.design.widget.TextInputLayout>
 
         <DatePicker
             android:id="@+id/date_month"
@@ -27,7 +37,7 @@
                 android:id="@+id/edit_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Valor"
+                android:hint="Value"
                 android:inputType="number|numberDecimal" />
         </android.support.design.widget.TextInputLayout>
 

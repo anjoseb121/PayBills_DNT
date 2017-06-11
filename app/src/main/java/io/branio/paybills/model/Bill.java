@@ -1,18 +1,25 @@
-package io.branio.paybills;
+package io.branio.paybills.model;
+
+import java.util.Date;
 
 /**
  * Created by anjose on 6/10/17.
  */
 
 public class Bill {
-    private String month;
+    private String name;
+    private int month;
     private Double value;
     private String company;
-    private String type;
-    private String dueDate;
+    private int type;
+    private Date dueDate;
     private boolean paid;
 
-    public Bill(String month, String company, Double value, String type, String due, boolean paid) {
+    public Bill() {
+    }
+
+    public Bill(String name, int month, String company, Double value, int type, Date due, boolean paid) {
+        this.name = name;
         this.month = month;
         this.company = company;
         this.value = value;
@@ -21,11 +28,11 @@ public class Bill {
         this.paid = paid;
     }
 
-    public String getMonth() {
+    public int getMonth() {
         return month;
     }
 
-    public void setMonth(String month) {
+    public void setMonth(int month) {
         this.month = month;
     }
 
@@ -45,19 +52,19 @@ public class Bill {
         this.company = company;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
-    public String getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -67,5 +74,13 @@ public class Bill {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
